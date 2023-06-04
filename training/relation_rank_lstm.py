@@ -4,7 +4,8 @@ import numpy as np
 import os
 # import psutil
 import random
-import tensorflow as tf
+import tensorflow._api.v2.compat.v1 as tf
+tf.disable_v2_behavior()
 from time import time
 try:
     from tensorflow.python.ops.nn_ops import leaky_relu
