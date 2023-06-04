@@ -3,7 +3,8 @@ import copy
 import numpy as np
 import os
 import random
-import tensorflow as tf
+import tensorflow._api.v2.compat.v1 as tf
+tf.disable_v2_behavior()
 from time import time
 try:
     from tensorflow.python.ops.nn_ops import leaky_relu
@@ -83,9 +84,7 @@ class RankLSTM:
             base_price = tf.placeholder(tf.float32, [self.batch_size, 1])
             all_one = tf.ones([self.batch_size, 1], dtype=tf.float32)
 
-            lstm_cell = tf.contrib.rnn.BasicLSTMCell(
-                self.parameters['unit']
-            )
+            lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(self.parameters['unit'])
 
             initial_state = lstm_cell.zero_state(self.batch_size,
                                                  dtype=tf.float32)
