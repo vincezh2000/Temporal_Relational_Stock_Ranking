@@ -341,7 +341,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('-p', help='path of EOD data',
                         default='../data/2013-01-01')
-    parser.add_argument('-m', help='market name', default='NASDAQ')
+    parser.add_argument('-m', help='market name', default='ASHR')
     parser.add_argument('-t', help='fname for selected tickers')
     parser.add_argument('-l', default=4,
                         help='length of historical sequence for feature')
