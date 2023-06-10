@@ -158,11 +158,11 @@ class EOD_Preprocessor:
                     features[cur_index - pad_begin][-1] = \
                         selected_EOD[row][4] / price_max
 
-            # # write out
-            # np.savetxt(os.path.join(opath, self.market_name + '_' +
-            #                         self.tickers[stock_index] + '_' +
-            #                         str(return_days) + '.csv'), features,
-            #            fmt='%.6f', delimiter=',')
+            # write out
+            np.savetxt(os.path.join(opath, self.market_name + '_' +
+                                    self.tickers[stock_index] + '_' +
+                                    str(return_days) + '.csv'), features,
+                       fmt='%.6f', delimiter=',')
 
 
 if __name__ == '__main__':
@@ -177,19 +177,12 @@ if __name__ == '__main__':
     if args.path is None:
         args.path = '../data/google_finance'
     if args.market is None:
-        args.market = 'NASDAQ'
+        args.market = 'ASHR'
 
     processor = EOD_Preprocessor(args.path, args.market)
     processor.generate_feature(
         processor.market_name + '_tickers_qualify_dr-0.98_min-5_smooth.csv',
-        datetime.strptime('2012-11-19 00:00:00', processor.date_format),
-        os.path.join(processor.data_path, '..', '2013-01-01'), return_days=1,
-        pad_begin=29
-    )
-
-    processor.generate_feature(
-        processor.market_name + '_tickers_qualify_dr-0.98_min-5_smooth.csv',
-        datetime.strptime('2012-11-19 00:00:00', processor.date_format),
+        datetime.strptime('2017-01-03 00:00:00', processor.date_format),
         os.path.join(processor.data_path, '..', '2013-01-01'), return_days=1,
         pad_begin=29
     )
