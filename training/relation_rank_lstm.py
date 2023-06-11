@@ -50,7 +50,8 @@ class ReRaLSTM:
 
         # relation data
         rname_tail = {'sector_industry': '_industry_relation.npy',
-                      'wikidata': '_wiki_relation.npy'}
+                      'wikidata': '_wiki_relation.npy',
+                      'supply_chain': '_chain.npy'}
 
         self.rel_encoding, self.rel_mask = load_relation_data(
             os.path.join(self.data_path, '..', 'relation', self.relation_name,
@@ -386,7 +387,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=desc)
     parser.add_argument('-p', help='path of EOD data',
                         default='../data/2013-01-01')
-    parser.add_argument('-m', help='market name', default='NASDAQ')
+    parser.add_argument('-m', help='market name', default='ASHR')
     parser.add_argument('-t', help='fname for selected tickers')
     parser.add_argument('-l', default=4,
                         help='length of historical sequence for feature')
@@ -401,11 +402,11 @@ if __name__ == '__main__':
     parser.add_argument('-g', '--gpu', type=int, default=0, help='use gpu')
 
     parser.add_argument('-e', '--emb_file', type=str,
-                        default='NASDAQ_rank_lstm_seq-16_unit-64_2.csv.npy',
+                        default='ASHR_rank_lstm_seq-16_unit-64_2.csv.npy',
                         help='fname for pretrained sequential embedding')
     parser.add_argument('-rn', '--rel_name', type=str,
-                        default='sector_industry',
-                        help='relation type: sector_industry or wikidata')
+                        default='supply_chain',
+                        help='relation type: sector_industry, wikidata OR supply chain')
     parser.add_argument('-ip', '--inner_prod', type=int, default=0)
     args = parser.parse_args()
 
