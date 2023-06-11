@@ -371,6 +371,26 @@ class ReRaLSTM:
             print('epoch:', i, ('time: %.4f ' % (t4 - t1)))
         print('\nBest Valid performance:', best_valid_perf)
         print('\tBest Test performance:', best_test_perf)
+        
+        # Save return ration also the factor of the final prediction.
+        total_return = []
+        for idx in range(self.trade_dates - self.parameters['seq'] - self.steps + 1):
+            eod_batch, mask_batch, price_batch, gt_batch = self.get_batch(
+                idx)
+            feed_dict = {
+                feature: eod_batch,
+                mask: mask_batch,
+                ground_truth: gt_batch,
+                base_price: price_batch
+            }
+            cur_rr = sess.run((return_ratio), feed_dict)
+            total_return.append(cur_rr)
+        sess.close()
+        tf.reset_default_graph()
+        return_name = self.market_name + "rr"
+        return_name = os.path.join(self.data_path, '..',return_name)
+        np.save(return_name, total_return)
+        
         sess.close()
         tf.reset_default_graph()
         return best_valid_pred, best_valid_gt, best_valid_mask, \
