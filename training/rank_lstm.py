@@ -324,8 +324,30 @@ class RankLSTM:
             print('epoch:', i, ('time: %.4f ' % (t4 - t1)))
         print('\nBest Valid performance:', best_valid_perf)
         print('\tBest Test performance:', best_test_perf)
+        total_seq_emb = []
+        total_return = []
+        for idx in range(self.trade_dates - self.parameters['seq'] - self.steps + 1):
+            eod_batch, mask_batch, price_batch, gt_batch = self.get_batch(
+                idx)
+            feed_dict = {
+                feature: eod_batch,
+                mask: mask_batch,
+                ground_truth: gt_batch,
+                base_price: price_batch
+            }
+            cur_semb, cur_rr = sess.run((seq_emb, return_ratio), feed_dict)
+            total_seq_emb.append(cur_semb)
+            total_return.append(cur_rr)
         sess.close()
         tf.reset_default_graph()
+        total_seq_emb = np.array(total_seq_emb).transpose((1, 0, 2))
+        emb_name = self.market_name + "_rank_lstm_seq-" + str(self.parameters['seq']) + "_unit-" +str(self.parameters['unit']) + "_2.csv"
+        emb_name = os.path.join(self.data_path, '..', "pretrain",emb_name)
+        return_name = self.market_name + "rr"
+        return_name = os.path.join(self.data_path, '..',return_name)
+        np.save(emb_name, total_seq_emb)
+        np.save(return_name, total_return)
+
 
         return best_valid_pred, best_valid_gt, best_valid_mask, \
                best_test_pred, best_test_gt, best_test_mask
